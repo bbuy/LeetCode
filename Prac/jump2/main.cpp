@@ -75,30 +75,48 @@
 
 using namespace std;
 
+// start from the first element, if current position is end() or greater than end(), return steps,  loop through all the possible next positions, if the possible next position is beyond end() then return current steps + 1. 
+// if non of the possible next position is end(), then pick the next position that from where can go the farest. 
+
 int canJump2(vector<int>& nums)
 {
+	int lastPos = nums.size()-1;
+	int idx = 0;
 	int steps = 0;
-	int i = 0;
 	while(true)
 	{
-		cout<<"i"<<i<<endl;
-		if(i>= nums.size()-1)
-		break;
-		
-		int range = nums[i];
-		int tmpMax = INT_MIN;
-		int tmpIdx = i;
-		for(int j=1;j<=range;j++)
+		if(idx>=lastPos)
 		{
-			if(i+j+nums[i+j] > tmpMax)
+			return steps;
+		}
+
+		int range = nums[idx];
+
+		int tmpMax = INT_MIN;
+		int tmpIdx = idx;
+		for(int i=1;i<=range;i++)
+		{
+			if(idx<9)
 			{
-				tmpMax = i+j+nums[i+j];
-				tmpIdx = i+j;
+				cout<<"idx"<<idx<<endl;
+			}
+			if((idx + i) >=lastPos)
+			{
+				return steps + 1;
+			}
+			else
+			{
+				int tmpLength = idx + i + nums[idx + i];
+				if(tmpLength > tmpMax)
+				{
+					tmpMax = tmpLength;
+					tmpIdx = idx + i;
+				}
 			}
 		}
 
 		steps++;
-		i = tmpIdx; 
+		idx = tmpIdx;
 	}
 
 	return steps;
